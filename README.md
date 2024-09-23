@@ -39,15 +39,19 @@ Pre Screening Task @SarvamAI
    ```bash
    pip install -r requirements.txt
 
-4. Extract text from PDF
+4. Set up GROQ API KEY:
+   ```bash
+   set GROQ_API_KEY=xxx
+
+5. Extract text from PDF
    ```bash
    python preprocess/extract.py 
    python preprocess/preprocess_csv.py
 
-5. Start the FastAPI server:
+6. Start the FastAPI server:
    ```bash
    uvicorn main:app --reload
-6. Start the Streamlit app:
+7. Start the Streamlit app:
    ```bash
    streamlit run streamlit_app.py
 ---
