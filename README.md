@@ -59,5 +59,9 @@ Pre Screening Task @SarvamAI
 4. RAG and Beyond: https://www.youtube.com/watch?v=fDmQnB8Ga6g&t=1273s
 5. Langchain Advance Retrieval : https://www.youtube.com/watch?v=DY3sT4yIezs
 
+# Future: 
+1. Muti Query for better retrieval of user query
+2. 
+
 
 
