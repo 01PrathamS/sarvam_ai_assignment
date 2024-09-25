@@ -45,6 +45,8 @@ def save_audio_to_file(audio_data, audio_file_path):
     """Save the audio data to a file."""
     with open(audio_file_path, "wb") as audio_file:
         audio_file.write(audio_data)
+
+    print(f"Audio saved to {audio_file_path}")
     return audio_file_path
 
 
@@ -70,5 +72,6 @@ if __name__ == "__main__":
     user_text = "તમારુ નામ શુ છે તામે ક્યા રહો છો"
     audio_file_path = "output.wav"
     text_to_speech(user_text, audio_file_path)
+
 
 

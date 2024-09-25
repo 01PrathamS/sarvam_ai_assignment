@@ -64,7 +64,9 @@ Pre Screening Task @SarvamAI
 5. Langchain Advance Retrieval : https://www.youtube.com/watch?v=DY3sT4yIezs
 
 # Future: 
-1. Muti Query for better retrieval of user query
+1. Muti Query for better retrieval of user query becasue for query asking two questions same time won't work here
+so need to convert it into to separate questions and handle it using either multiquery or parallel function calling
+
 2. 
 
 
