@@ -4,11 +4,16 @@ Pre Screening Task @SarvamAI
 # You Tube video 
 [![AI Healthcare Receptionist](https://img.youtube.com/vi/12q6XbdCjTg/maxresdefault.jpg)](https://youtube.com/shorts/12q6XbdCjTg)
 
-# Adhyayanam
+# Project : Adhyayanam
 This project provides Question-Answer with NCERT book chapter with text and voice capability. 
 Efficiently answer user query.
 
-# Project Structure
+# My Approach 
+1. I first extract the pdf data with the help of Fitz python package, with the text color, font size, font shape and style. then classify the content with relevant headings or markdowns such as activity, conclusion, questions, and figure descriptions for figures.
+2. i split the text in sliding window manner overlapping sentences, to keep up with the context  based on the markdowns/headings. so i can take markdowns/headings as a metadata this helps while searching similar context.
+3. save the data to csv file(easy to debug things) and perform similary search, return most similar text as a context.
+4. pass the context with user query to Groq(LLM).
+5. based on the that give response in speech or text, as per preferance.
 
 ## Getting Started
 
