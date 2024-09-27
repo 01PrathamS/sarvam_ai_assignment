@@ -2,7 +2,7 @@
 Pre Screening Task @SarvamAI
 
 # You Tube video 
-[![AI Healthcare Receptionist](https://img.youtube.com/shorts/12q6XbdCjTg/maxresdefault.jpg)](https://youtube.com/shorts/12q6XbdCjTg)
+[![AI Healthcare Receptionist](https://img.youtube.com/vi/12q6XbdCjTg/maxresdefault.jpg)](https://youtube.com/shorts/12q6XbdCjTg)
 
 # Adhyayanam
 This project provides Question-Answer with NCERT book chapter with text and voice capability. 
