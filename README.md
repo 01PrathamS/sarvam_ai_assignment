@@ -2,7 +2,7 @@
 Pre Screening Task @SarvamAI
 
 # You Tube video 
-[![AI Healthcare Receptionist](https://img.youtube.com/vi/EfwcaErl3g4/maxresdefault.jpg)](https://youtube.com/shorts/12q6XbdCjTg)
+[![AI Healthcare Receptionist](https://img.youtube.com/shorts/12q6XbdCjTg/maxresdefault.jpg)](https://youtube.com/shorts/12q6XbdCjTg)
 
 # Adhyayanam
 This project provides Question-Answer with NCERT book chapter with text and voice capability. 
@@ -41,7 +41,7 @@ Efficiently answer user query.
    streamlit run streamlit_app.py
 ---
 
-# Proejct Structure 
+# Project Structure 
 
 # Resources I've used
 
