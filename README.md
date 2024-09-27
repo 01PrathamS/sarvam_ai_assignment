@@ -42,6 +42,11 @@ Efficiently answer user query.
 ---
 
 # Project Structure 
+1. ```preprocess/extract.py``` Extract pdf , text with heading, figure with figure description, questions, conclusions, activities
+2. ```preprocess/helper.py``` helper functions for reformat extracted information
+3. ```preprocess/similarity_search.py``` helper function to find similar text to user_query to pass as a context to llm
+4. ```app/main.py``` fastapi endpoints
+5. ```app/streamlit_run.py``` streamlit UI for endpoints
 
 # Resources I've used
 
