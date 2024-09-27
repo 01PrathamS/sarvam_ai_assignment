@@ -3,7 +3,7 @@ import fitz
 import re 
 import json 
 
-def extract_text_from_full_page(pdf_path, page_num: list):
+def extract_text_from_full_page(pdf_path, page_num=None):
   doc = fitz.open(pdf_path)
 
   text = []

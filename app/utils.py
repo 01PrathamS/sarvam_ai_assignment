@@ -8,31 +8,32 @@ import time
 import os
 import base64
 import pyaudio
+import pathlib
+import wavio 
+import sounddevice as sd
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
+# dataframe path 
+base_dir = pathlib.Path(__file__).resolve().parent.parent
+df_path = base_dir / "data" / "extracted_data.csv"
 
 
 #  Load the pre-trained model and the dataset
 model = SentenceTransformer('all-MiniLM-L6-v2')
-# here instead of using the  relative path, use the absolute path
-df = pd.read_csv(os.path.join(r'C:\Users\saval\Desktop\sarvam_ai\sarvam_ai_assignment\RAG_NCERT\data\json_data_4.csv'))
+# here instead of using the  relative path, use the absolute pathnme
+df = pd.read_csv(os.path.join(df_path))
 df['embedding'] = df['embedding'].apply(lambda x: np.array(eval(x)))  # Convert embedding strings to numpy arrays
 
 
 def similarity_search(query, top_n=5):
     """Search for similar content based on the input query."""
-    query_embedding_time = time.time()
     query_embedding = model.encode(query)
-    print(f"Query embedding generated in {time.time() - query_embedding_time:.2f} seconds.")
     top_results = []
-    
     for i, row in df.iterrows():
         row_embedding = np.array(row['embedding'])
         similarity = cosine_similarity([query_embedding], [row_embedding])[0][0]
-        
         top_results.append({
             "index": i,
             "heading": row['heading'],
@@ -40,7 +41,6 @@ def similarity_search(query, top_n=5):
             "content": row['content'],
             "word_count": len(row['content'].split())
         })
-
     # Sort results by similarity score and return the top N
     top_results = sorted(top_results, key=lambda x: x['score'], reverse=True)[:top_n]
     return top_results[0]['content'] if top_results else None
@@ -70,26 +70,22 @@ def call_llm_groq(user_input, context):
         return "Sorry, the LLM service is not available at the moment."
     
 # Speech-to-text function
-def speech_to_text(audio_file):
+def speech_to_text_translate(audio_file_path):
     url = "https://api.sarvam.ai/speech-to-text-translate"
-    data = {
-        "language-code": "en-IN",
-        "model": "saaras:v1",
-    }
-    headers = {"API-Subscription-Key": "762a32ee-b69f-464b-9311-140901e684f3"}
-
-    response = requests.post(url, data=data, files={"file": ("output.wav", audio_file, "audio/wav")}, headers=headers)
-    if response.status_code == 200:
-        return response.text
-    else:
-        return f"Error: {response.status_code}, {response.text}"
+    with open(audio_file_path, 'rb') as audio_file:
+        files = {'file': (audio_file_path, audio_file, 'audio/wav')}
+        headers = {
+            "api-subscription-key": os.getenv("SARVAM_API_KEY"),
+        }
+        response = requests.post(url, files=files, headers=headers)
+    return response.text
     
 # Text-to-speech function
-def text_to_speech(text): # returns base64 encoded audio string
+def text_to_speech(text: str): # returns base64 encoded audio string
     url = "https://api.sarvam.ai/text-to-speech"
     payload = {
         "inputs": [text],
-        "target_language_code": "gu-IN",
+        "target_language_code": "hi-IN",
         "pitch": 1,
         "speaker": "maitreyi",
         "pace": 1,
@@ -99,7 +95,7 @@ def text_to_speech(text): # returns base64 encoded audio string
         "model": "bulbul:v1"
     }
     headers = {
-        "api-subscription-key": "762a32ee-b69f-464b-9311-140901e684f3",
+        "api-subscription-key": os.getenv("SARVAM_API_KEY"),
         "Content-Type": "application/json"
     }
 
@@ -121,6 +117,3 @@ def play_audio(audio_base64):
     stream.stop_stream()
     stream.close()
     pyaudio_instance.terminate()
-
-
-    

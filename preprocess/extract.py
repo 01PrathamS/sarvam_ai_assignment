@@ -1,4 +1,5 @@
 import fitz  # PyMuPDF
+from preprocess import preprocess_to_csv
 from helper import (extract_text_from_full_page,
                     save_extracted_text_to_file,
                     reformat_questions,
@@ -99,7 +100,12 @@ def extract_text_with_font_info(pdf_path):
         activity[act] = ' '.join(activity[act])
 
     # save this to json file 
-    save_to_json(data_dict, activity, questions, figure_desc, conclusions, final_questions, filename="data/extracted_information.json")
+    json_file_path = "data/extracted_data.json"
+    save_to_json(data_dict, activity, questions, figure_desc, conclusions, final_questions, filename=json_file_path)
+    # save it as csv file 
+    csv_file_path = "data/extracted_data.csv"
+    preprocess_to_csv(json_file_path, output_csv=csv_file_path, window_size=4)
+
     return 
 
 # how the output is looking like with data type 
@@ -119,5 +125,5 @@ if __name__ == "__main__":
     txt_file_path = base_dir / "data" / "extracted_text.txt"
     json_file_path = base_dir / "data" / "extracted_information.json"
     extract_text_with_font_info(pdf_path)
-    save_extracted_text_to_file(json_file_path, txt_file_path)
+    # save_extracted_text_to_file(json_file_path, txt_file_path)
 

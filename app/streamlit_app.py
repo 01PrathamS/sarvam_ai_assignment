@@ -1,92 +1,47 @@
-# import streamlit as st
-# import requests
-# import json
-
-# # Set FastAPI endpoint URL
-# API_URL = "http://127.0.0.1:8000/request/"
-
-# st.title("NCERT-gpt LLM-based Question Answering")
-
-# # Input fields
-# query = st.text_input("Enter your query:")
-
-# # Button to submit query
-# if st.button("Submit Query"):
-#     if query:
-#         # Prepare the request body
-#         request_body = {
-#             "query": query,
-#         }
-
-#         try:
-#             # Send POST request to the FastAPI server
-#             response = requests.post(API_URL, json=request_body)
-
-#             # Check for successful request
-#             if response.status_code == 200:
-#                 response_data = response.json()
-#                 st.subheader("LLM Response:")
-#                 st.write(response_data.get("response", "No response found."))
-#             else:
-#                 st.error(f"Error: {response.status_code} - {response.text}")
-#         except Exception as e:
-#             st.error(f"An error occurred: {e}")
-#     else:
-#         st.warning("Please enter a query before submitting.")
-
 import streamlit as st
 import requests
-import json
+import base64
+import pyaudio
 
-API_URL = "http://127.0.0.1:8000/request/"
+def play_audio(audio_base64):
+    """Play base64 encoded audio using PyAudio."""
+    audio_data = base64.b64decode(audio_base64)
+    pyaudio_instance = pyaudio.PyAudio()
+    stream = pyaudio_instance.open(
+        format=pyaudio.paInt16, 
+        channels=1, 
+        rate=16000, 
+        output=True
+    )
+    stream.write(audio_data)
+    stream.stop_stream()
+    stream.close()
+    pyaudio_instance.terminate()
 
-# Title and Sidebar
-st.title("NCERT-gpt ")
-st.markdown("This is a Question Answering System based on an LLM, RAG.")
-st.caption("Enter your query in the text box and click on the 'Submit Query' button to get the answer.")
+# API URLs
+LLM_API_URL = "http://localhost:8000/request/"
+TEXT_TO_SPEECH_API_URL = "http://localhost:8000/text-to-speech/"
 
-# Initialize chat history in session state
-if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "Hello How can I help you?"}]
+# Streamlit app layout
+st.title("Ask a Question")
+input_query = st.text_area("Enter your query:", height=150, key="input_query")
 
-# # Display chat history
-for msg in st.session_state.messages:
-    st.chat_message(msg["role"]).write(msg["content"])
+# Text Button
+if st.button("Text"): 
+    response = requests.post(LLM_API_URL, json={"query": input_query})
+    if response.status_code == 200: 
+        response_data = response.json() 
+        st.write(response_data.get("response", "No response"))
+    else: 
+        st.error(f"Error {response.status_code}: Unable to fetch the response")
 
-# Sidebar - Clear Chats button
-if st.sidebar.button("Clear Chats"):
-    st.session_state.messages = []
-
-# Input field for user query
-query = st.text_input("Enter your query:")
-
-# Button to submit query
-if st.button("Submit Query"):
-    if query:
-        # Prepare the request body
-        request_body = {
-            "query": query,
-        }
-
-        try:
-            # Send POST request to the FastAPI server
-            response = requests.post(API_URL, json=request_body)
-
-            # Check for successful request
-            if response.status_code == 200:
-                response_data = response.json()
-
-                # Append user query and LLM response to chat history
-                st.session_state.messages.append({"role": "user", "content": query})
-                st.session_state.messages.append({"role": "assistant", "content": response_data.get("response", "No response found.")})
-                # st.chat_message("assistant").write(response_data.get("response", "No response found."))
-
-                # Display the chat history
-                # for msg in st.session_state.messages:
-                #     st.chat_message(msg["role"]).write(msg["content"])
-            else:
-                st.error(f"Error: {response.status_code} - {response.text}")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-    else:
-        st.warning("Please enter a query before submitting.")
+# Speech Button
+if st.button("Speech"): 
+    response = requests.post(TEXT_TO_SPEECH_API_URL, json={"query": input_query}) 
+    if response.status_code == 200: 
+        response_data = response.json()
+        audio_string = response_data.get("audio_base64", "No data Received")
+        play_audio(audio_string) 
+        st.success("Audio response played!")
+    else: 
+        st.error(f"Error {response.status_code}: Unable to fetch the response")
