@@ -10,7 +10,7 @@ Efficiently answer user query.
 
 # My Approach 
 1. I first extract the pdf data with the help of Fitz python package, with the text color, font size, font shape and style. then classify the content with relevant headings or markdowns such as activity, conclusion, questions, and figure descriptions for figures.
-2. i split the text in sliding window manner overlapping sentences, to keep up with the context  based on the markdowns/headings. so i can take markdowns/headings as a metadata this helps while searching similar context.
+2. Then I split the text in sliding window manner overlapping sentences, to keep up with the context  based on the markdowns/headings. so i can take markdowns/headings as a metadata this helps while searching similar context.
 3. save the data to csv file(easy to debug things).
 4. converting user_queries in subqueries if needed and then perform similary search, return most similar text as a context for each subquery.
 5. make a condition only respond if similarity_score > threshold, better for handling unrelevant queries.
