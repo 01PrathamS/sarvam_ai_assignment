@@ -11,9 +11,20 @@ Efficiently answer user query.
 # My Approach 
 1. I first extract the pdf data with the help of Fitz python package, with the text color, font size, font shape and style. then classify the content with relevant headings or markdowns such as activity, conclusion, questions, and figure descriptions for figures.
 2. i split the text in sliding window manner overlapping sentences, to keep up with the context  based on the markdowns/headings. so i can take markdowns/headings as a metadata this helps while searching similar context.
-3. save the data to csv file(easy to debug things) and perform similary search, return most similar text as a context.
-4. pass the context with user query to Groq(LLM).
-5. based on the that give response in speech or text, as per preferance.
+3. save the data to csv file(easy to debug things).
+4. converting user_queries in subqueries if needed and then perform similary search, return most similar text as a context for each subquery.
+5. make a condition only respond if similarity_score > threshold, better for handling unrelevant queries.
+6. pass the context with user query to Groq(LLM).
+7. based on the that give response in speech or text, as per preferance.
+
+> [!TIP]  
+> Improvements in result after adding support for MultiQuery.
+
+<div>
+    <img src="https://github.com/01PrathamS/sarvam_ai_assignment/blob/main/images/before_multiquery.png" width="400" alt="Before MultiQuery" style="display: inline-block; margin-right: 20px;">
+    <img src="https://github.com/01PrathamS/sarvam_ai_assignment/blob/main/images/after_mutliquery.png" width="400" alt="After MultiQuery" style="display: inline-block;">
+</div>
+
 
 ## Getting Started
 
@@ -60,9 +71,3 @@ Efficiently answer user query.
 3. Full Stack Retrieval: https://retrieval-tutorials.vercel.app/
 4. RAG and Beyond: https://www.youtube.com/watch?v=fDmQnB8Ga6g&t=1273s
 5. Langchain Advance Retrieval : https://www.youtube.com/watch?v=DY3sT4yIezs
-
-# Future: 
-1. Using Multi Query method for better answers 
-
-
-
