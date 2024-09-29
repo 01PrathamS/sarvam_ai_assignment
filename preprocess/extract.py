@@ -1,5 +1,5 @@
 import fitz  # PyMuPDF
-from preprocess import preprocess_to_csv
+from json_to_csv import preprocess_to_csv
 from helper import (extract_text_from_full_page,
                     save_extracted_text_to_file,
                     reformat_questions,

@@ -32,6 +32,7 @@ if st.button("Text"):
     if response.status_code == 200: 
         response_data = response.json() 
         st.write(response_data.get("response", "No response"))
+        st.write(response_data.get("context", "No context"))
     else: 
         st.error(f"Error {response.status_code}: Unable to fetch the response")
 
